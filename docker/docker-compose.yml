@@ -1,0 +1,95 @@
+version: '3'
+
+networks:
+  dockerweb:
+
+services:
+
+# PHP-web ##############################################
+    php-web:
+      image: php:0.0.1
+      deploy:
+        replicas: 1
+      volumes:
+        - /data/docker-data:/data/docker-data
+        - /data/www:/data/www
+        - /data/supervisord/conf.d:/etc/supervisor/conf.d
+      ports:
+        - "9000:9000"
+        - "1215:1215"
+      networks:
+        - dockerweb
+### PHP-cli ##############################################
+#    php-cli:
+#      build:
+#        context: ./php
+#      volumes:
+#        - /data/docker-data:/data
+#        - /var/www/html:/var/www/html
+#        - /data/supervisord.cli:/etc/supervisor/conf.d
+#      networks:
+#        - dockerweb
+
+
+### NGINX Server #########################################
+    nginx:
+      image: nginx:0.0.1
+      deploy:
+        replicas: 1
+      volumes:
+        - /data/docker-data:/data/docker-data
+#        - /var/www/html:/var/www/html
+        - /data/www:/data/www
+        - /etc/letsencrypt:/etc/letsencrypt
+        - /data/docker-data/nginx/conf.d:/etc/nginx/sites-available
+      ports:
+        - "80:80"
+        - "443:443"
+      networks:
+        - dockerweb
+### GO Server #########################################
+    go:
+      image: go:0.0.1
+      deploy:
+        replicas: 1
+      volumes:
+        - /data/www/go:/go/src
+        - /data/supervisord/go.d:/etc/supervisor/conf.d
+      ports:
+        - "9090:9090"
+      networks:
+        - dockerweb
+
+
+### REDIS Server #########################################
+#    redis:
+#      image: redis:0.0.1
+#      deploy:
+#        replicas: 1
+#      volumes:
+#        - /data/docker-data/redis/data:/data/redis
+#      ports:
+#        - "6379:6379"
+#      networks:
+#        - dockerweb
+#
+#    elasticsearch:
+#      image: elasticsearch:0.0.1
+#      deploy:
+#        replicas: 1
+#      ports:
+#        - "9200:9200"
+#        - "9300:9300"
+#      volumes:
+#        - /data/docker-data/elasticsearch/data:/usr/share/elasticsearch/data
+#        - /data/docker-data/elasticsearch/logs:/usr/share/elasticsearch/logs
+#      networks:
+#        - dockerweb
+#    kibana:
+#      image: kibana:0.0.1
+#      deploy:
+#        replicas: 1
+#      ports:
+#        - "5601:5601"
+#      networks:
+#        - dockerweb
