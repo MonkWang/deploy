@@ -4,6 +4,10 @@ import sys
 import getopt
 import constants
 from fabric import Connection
+from aliyunsdkcore.client import AcsClient
+from aliyunsdkcore.acs_exception.exceptions import ClientException
+from aliyunsdkcore.acs_exception.exceptions import ServerException
+from aliyunsdkcdn.request.v20180510.PushObjectCacheRequest import PushObjectCacheRequest
 import hashlib
 from fabric import SerialGroup as Group
 
@@ -52,7 +56,7 @@ class Deploy:
             else:
                 os.system('git pull ' + branch.replace('origin/', 'origin '))
             os.system('chown -Rf www:www ' + code)
-            os.system('chmod -R 755 ' + code)
+            # os.system('chmod -R 755 ' + code)
 
     def get_real_code_dir(self, project_name, branch):
         code = constants.CODE_DIR + '/' + project_name
@@ -141,3 +145,16 @@ class Deploy:
                     # c.run('redis-cli set gray off')
         if not handle is None:
             handle(project_name, server, branch)
+
+    def refresh_cdn(self):
+        project_name, server, _ = self.get_param()
+        if project_name != 'heplus/heplus-frontend':
+            return
+        if server != 'heplus':
+            return
+        client = AcsClient(constants.ALIYUN_OSS_ACCESS_KEY_ID, constants.ALIYUN_OSS_ACCESS_KEY_SECRET, 'cn-hangzhou')
+        request = PushObjectCacheRequest()
+        request.set_accept_format('json')
+        request.set_ObjectPath(constants.HEPLUS_URL)
+        response = client.do_action_with_exception(request)
+        print(str(response, encoding='utf-8'))
