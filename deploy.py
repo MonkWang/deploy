@@ -5,8 +5,6 @@ import getopt
 import constants
 from fabric import Connection
 from aliyunsdkcore.client import AcsClient
-from aliyunsdkcore.acs_exception.exceptions import ClientException
-from aliyunsdkcore.acs_exception.exceptions import ServerException
 from aliyunsdkcdn.request.v20180510.PushObjectCacheRequest import PushObjectCacheRequest
 import hashlib
 from fabric import SerialGroup as Group
@@ -157,4 +155,4 @@ class Deploy:
         request.set_accept_format('json')
         request.set_ObjectPath(constants.HEPLUS_URL)
         response = client.do_action_with_exception(request)
-        print(str(response, encoding='utf-8'))
+        return str(response, encoding='utf-8')
