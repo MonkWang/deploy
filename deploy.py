@@ -5,7 +5,7 @@ import getopt
 import constants
 from fabric import Connection
 from aliyunsdkcore.client import AcsClient
-from aliyunsdkcdn.request.v20180510.PushObjectCacheRequest import PushObjectCacheRequest
+from aliyunsdkcdn.request.v20180510.RefreshObjectCachesRequest import RefreshObjectCachesRequest
 import hashlib
 from fabric import SerialGroup as Group
 
@@ -151,7 +151,7 @@ class Deploy:
         if server != 'heplus':
             return
         client = AcsClient(constants.ALIYUN_OSS_ACCESS_KEY_ID, constants.ALIYUN_OSS_ACCESS_KEY_SECRET, 'cn-hangzhou')
-        request = PushObjectCacheRequest()
+        request = RefreshObjectCachesRequest()
         request.set_accept_format('json')
         request.set_ObjectPath(constants.HEPLUS_URL)
         response = client.do_action_with_exception(request)
