@@ -52,7 +52,8 @@ class Deploy:
                 os.system('git fetch --all')
                 os.system('git reset --hard ' + commit)
             else:
-                os.system('git pull ' + branch.replace('origin/', 'origin '))
+                os.system('git fetch --all')
+                os.system('git reset --hard ' + branch)
             os.system('chown -Rf www:www ' + code)
             # os.system('chmod -R 755 ' + code)
 
@@ -129,15 +130,16 @@ class Deploy:
             elif type is constants.BACKEND:
                 delete = '--delete' if is_test else ''
                 c.run(
-                    'rsync -avz -e "ssh -o StrictHostKeyChecking=no" --exclude "storage/" --exclude "public/storage" %s root@%s:%s/ %s' % (
+                    'rsync -avz -e "ssh -o StrictHostKeyChecking=no" --include="storage/" --include="storage/framework/" --include="storage/framework/*" --exclude="storage/*" --exclude="public/storage"  %s root@%s:%s/ %s' % (
                         delete, constants.JUMP_SERVER_IP, code, project))
                 with c.cd(project):
                     # c.run('redis-cli set gray on')
                     c.run('php artisan migrate --force')
-                    ret = 'supervisorctl restart %s-swoole' % name
+                    ret = 'supervisorctl reload'
                     if server_name in constants.DOCKER_SERVER:
                         c.run('chmod -R 777 %s' % project)
                         c.run('docker exec php-web %s' % ret)
+                        c.run('docker exec php-cli %s' % ret)
                     else:
                         c.run(ret)
                     # c.run('redis-cli set gray off')
