@@ -54,7 +54,11 @@ class Deploy:
             else:
                 os.system('git fetch --all')
                 os.system('git reset --hard ' + branch)
-            os.system('chown -Rf www:www ' + code)
+            is_sxtest2 = server.find('sxtest2') != -1
+            if is_sxtest2:
+                os.system('chown -Rf nginx:nginx ' + code)
+            else:
+                os.system('chown -Rf www:www ' + code)
             # os.system('chmod -R 755 ' + code)
 
     def get_real_code_dir(self, project_name, branch):
