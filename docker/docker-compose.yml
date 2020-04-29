@@ -20,16 +20,15 @@ services:
       networks:
         - dockerweb
 ### PHP-cli ##############################################
-#    php-cli:
-#      build:
-#        context: ./php
-#      volumes:
-#        - /data/docker-data:/data
-#        - /var/www/html:/var/www/html
-#        - /data/supervisord.cli:/etc/supervisor/conf.d
-#      networks:
-#        - dockerweb
-
+    php-cli:
+      build:
+        context: ./php
+      volumes:
+        - /data/docker-data:/data
+        - /var/www/html:/var/www/html
+        - /data/supervisord.cli:/etc/supervisor/conf.d
+      networks:
+        - dockerweb
 
 ### NGINX Server #########################################
     nginx:
@@ -62,34 +61,37 @@ services:
 
 
 ### REDIS Server #########################################
-#    redis:
-#      image: redis:0.0.1
-#      deploy:
-#        replicas: 1
-#      volumes:
-#        - /data/docker-data/redis/data:/data/redis
-#      ports:
-#        - "6379:6379"
-#      networks:
-#        - dockerweb
-#
-#    elasticsearch:
-#      image: elasticsearch:0.0.1
-#      deploy:
-#        replicas: 1
-#      ports:
-#        - "9200:9200"
-#        - "9300:9300"
-#      volumes:
-#        - /data/docker-data/elasticsearch/data:/usr/share/elasticsearch/data
-#        - /data/docker-data/elasticsearch/logs:/usr/share/elasticsearch/logs
-#      networks:
-#        - dockerweb
-#    kibana:
-#      image: kibana:0.0.1
-#      deploy:
-#        replicas: 1
-#      ports:
-#        - "5601:5601"
-#      networks:
-#        - dockerweb
+    redis:
+      image: redis:0.0.1
+      deploy:
+        replicas: 1
+      volumes:
+        - /data/docker-data/redis/data:/data/redis
+      ports:
+        - "6379:6379"
+      networks:
+        - dockerweb
+
+    elasticsearch:
+      image: elasticsearch:0.0.1
+      deploy:
+        replicas: 1
+      ports:
+        - "9200:9200"
+        - "9300:9300"
+      volumes:
+        - /data/docker-data/elasticsearch/data:/usr/share/elasticsearch/data
+        - /data/docker-data/elasticsearch/logs:/usr/share/elasticsearch/logs
+        - /data/docker-data/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      networks:
+        - dockerweb
+    kibana:
+      image: kibana:0.0.1
+      deploy:
+        replicas: 1
+      volumes:
+        - /data/docker-data/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+      ports:
+        - "5601:5601"
+      networks:
+        - dockerweb

@@ -141,7 +141,7 @@ class Deploy:
                     c.run('php artisan migrate --force')
                     ret = 'supervisorctl reload'
                     if server_name in constants.DOCKER_SERVER:
-                        c.run('chmod -R 777 %s' % project)
+                        # c.run('chmod -R 777 %s' % project)
                         c.run('docker exec php-web %s' % ret)
                         c.run('docker exec php-cli %s' % ret)
                     else:

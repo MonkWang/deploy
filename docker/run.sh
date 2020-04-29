@@ -47,8 +47,6 @@ docker rm mysql
 docker run --net=host -d --restart=always -e MYSQL_ROOT_PASSWORD=dev  --name=mysql -v /var/lib/mysql:/var/lib/mysql mysql:0.0.1
 #
 ## 运行redis
-#docker stop redis
-#docker rm redis
-#docker run --net=host  --restart=always --name=redis -d redis:0.0.1
-
-# yunx
+docker stop redis
+docker rm redis
+docker run --net=host  --restart=always --name=redis -d redis:0.0.1

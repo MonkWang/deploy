@@ -18,9 +18,9 @@ yum -y install git
 #安装php
 rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
-yum -y install php72w php72w-cli php72w-devel php72w-common php72w-mysqlnd php72w-gd php72w-xml php72w-zip php72w-fpm php72w-mbstring php72w-pear php72w-devel
+yum -y install php72w php72w-cli php72w-devel php72w-common php72w-mysqlnd php72w-gd php72w-xml php72w-zip php72w-fpm php72w-mbstring php72w-pear php72w-devel php72w-opcache
 #yum -y install php72w php72w-cli php72w-devel php72w-common php72w-mysql php72w-gd php72w-xml php72w-zip php72w-fpm php72w-mbstring php72w-pear php72w-devel
-
+#//yum install -y php73-php-fpm php73-php-cli php73-php-bcmath php73-php-gd php73-php-json php73-php-mbstring php73-php-mcrypt php73-php-mysqlnd php73-php-opcache php73-php-pdo php73-php-pecl-crypto php73-php-pecl-mcrypt php73-php-pecl-geoip php73-php-recode php73-php-snmp php73-php-soap php73-php-xmll php73-php-zip php73-php-dom php73-php-swoole php73-php-devel
 
 # composer
 cd ~
@@ -40,12 +40,12 @@ sudo yum-config-manager --add-repo https://openresty.org/package/centos/openrest
 sudo yum -y install openresty
 
 #安装redis
-#cd ~
-#wget http://download.redis.io/releases/redis-5.0.2.tar.gz
-#tar -xvf redis-5.0.2.tar.gz
-#cd redis-5.0.2
-#make
-#make install
+cd ~
+wget http://download.redis.io/releases/redis-5.0.2.tar.gz
+tar -xvf redis-5.0.2.tar.gz
+cd redis-5.0.2
+make
+make install
 
 #安装node
 #cd ~
