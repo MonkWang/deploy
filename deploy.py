@@ -42,7 +42,7 @@ class Deploy:
             code = self.get_real_code_dir(project_name, branch)
             if not os.path.exists(code):
                 os.makedirs(code, exist_ok=True)
-                os.system('git clone ssh://gogs@gogs.developer.shengxintech.com:8089/' + project_name + '.git ' + code)
+                os.system('git clone ssh://xxxxx/' + project_name + '.git ' + code)
                 os.chdir(code)
                 os.system('git checkout -b ' + branch[branch.index('/') + 1:])
 
